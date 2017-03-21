@@ -1,20 +1,21 @@
 package com.mkyong.common.controller;
 
-
-import HRVAS_web_v3.*;
+import Hw8.HRVAS_2_web_v2;
 import com.mathworks.toolbox.javabuilder.MWJavaObjectRef;
 import com.mathworks.toolbox.javabuilder.webfigures.*;
 import java.io.File;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.apache.log4j.Logger;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
@@ -23,8 +24,10 @@ import org.springframework.web.servlet.mvc.AbstractController;
 public class HelloWorldController  {
 
 
-        private static final String uploadingdir = System.getProperty("user.dir") ;
+        private static final String uploadingdir = System.getProperty("user.dir") + "/";
+
         
+    
         @RequestMapping(value = "/welcome.htm")
 	protected String handle(HttpServletRequest request, Model model,
 			HttpServletResponse response) throws Exception {
@@ -44,25 +47,18 @@ public class HelloWorldController  {
 	}
 
         @RequestMapping(value = "/upload.form", method = RequestMethod.POST)
-	protected String handleRequestInternal( Model model, HttpServletRequest request) throws Exception {
+	protected String handleRequestInternal(@RequestParam("file") MultipartFile file, Model model, HttpServletRequest request) throws Exception {
                 
-                
+            String file_name_and_path = uploadingdir + file.getOriginalFilename();
+            File file2 = new File(file_name_and_path);
+            file.transferTo(file2);
+            
+                System.out.println(file_name_and_path);
                 System.out.println("You're big!");
-              /*  
-                for(MultipartFile uploadedFile : uploadingFiles) {
-                File file = new File(uploadingdir + uploadedFile.getOriginalFilename());
-                uploadedFile.transferTo(file);
-                }
-		*/
-               // MultipartFile file = (MultipartFile) request.getAttribute("uploadingFiles");
-                        
-                                
-                
-		//model.addObject("message2", file.toString());
-               
+             
                 HttpSession session = request.getSession();       
                 
-                HRVAS_web_v3 hrvas;                  
+                HRVAS_2_web_v2 hrvas;                  
                 
                 WebFigure obrazek= (WebFigure)session.getAttribute("obrazek");
                 WebFigure obrazek1 = (WebFigure)session.getAttribute("obrazek1");
@@ -70,10 +66,10 @@ public class HelloWorldController  {
                 WebFigure obrazek3=(WebFigure)session.getAttribute("obrazek3");
                 
 
-                hrvas = new HRVAS_web_v3();
+                hrvas = new HRVAS_2_web_v2();
 
                
-                Object[] result = hrvas.HRVAS_Langer_v3(4);
+                Object[] result = hrvas.HRVAS_Langer_v3(5,file_name_and_path,"matlab smooth");
                 MWJavaObjectRef ref;
                 
                 ref = (MWJavaObjectRef)result[0];

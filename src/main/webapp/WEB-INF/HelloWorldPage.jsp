@@ -1,5 +1,9 @@
 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="wf" uri="http://www.mathworks.com/builderja/webfigures.tld" %>
 <html>
 <body>
@@ -14,17 +18,18 @@
         
 
         
-        <form name="uploadingForm" enctype="multipart/form-data" action="upload.form" method="POST">
-            <p>
-                <input id="fileInput" type="file" name="uploadingFiles" onchange="updateSize();" multiple>
-                selected files: <span id="fileNum">0</span>;
-                total size: <span id="fileSize">0</span>
-            </p>
-            <p>
+        <form action="upload.form" enctype="multipart/form-data" method="POST" >
+                <input type="file"  name="file" >
                 <input type="submit" value="Upload files">
-            </p>
+
         </form>
-            
+ <form action="upload.form"  method="POST">
+  First name:<br>
+  <input type="text" name="firstname" value="Mickey"><br>
+  Last name:<br>
+  <input type="text" name="lastname" value="Mouse"><br><br>
+  <input type="submit" value="Submit">
+</form>             
             <p>
                 
         ${webFig2}
